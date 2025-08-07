@@ -37,6 +37,9 @@ class Estoque(models.Model):
         related_name="estoque",
         verbose_name="Localizacao",
     )
+    ultima_movimentacao = models.DateField(
+        verbose_name="Data de movimentacao", blank=True, null=True
+    )
 
     def __str__(self):
         return f"{self.produto.nome} - {self.localizacao}"

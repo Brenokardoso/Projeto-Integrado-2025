@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base_css.css'%}">
+    <title>Armazem</title>
+</head>
+<body>
+    
+    <center>
+        <form action="{% url 'cadastro' %}" method="POST">
+        {% csrf_token %}
+            <input type="text" name="nome" placeholder="digite seu nome..." >
+            <br>
+            <input type="text" name="categoria" placeholder="Digite a sua categoria">
+            <br>
+            <input type="date" name="data_validade" placeholder="Digite a sua data_validade">
+            <br>
+            <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador">
+            <br>
+            <input type="number" name="valor" placeholder="Digite o seu valor">
+            <button type="submit">
+                Enviar
+            </button>
+        </form>
+    </center>
+    
+</body>
+</html>
