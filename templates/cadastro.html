@@ -11,22 +11,62 @@
 <body>
     
     <center>
+        <h2>
+        Cadastro de produtos
+        </h2>
+        <br>
         <form action="{% url 'cadastro' %}" method="POST">
         {% csrf_token %}
-            <input type="text" name="nome" placeholder="digite seu nome..." >
+            <input type="text" name="nome" placeholder="digite seu nome..." style="width: 200px;" >
             <br>
-            <input type="text" name="categoria" placeholder="Digite a sua categoria">
+            <input type="number" name="categoria" placeholder="Digite a sua categoria" style="width: 200px;">
             <br>
-            <input type="date" name="data_validade" placeholder="Digite a sua data_validade">
+            <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 200px;">
             <br>
-            <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador">
+            <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador" style="width: 200px;">
             <br>
-            <input type="number" name="valor" placeholder="Digite o seu valor">
+            <input type="number" name="valor" placeholder="Digite o seu valor" style="width: 200px;">
+            <br>
+            <input type="number" name="quantidade" placeholder="Digite a quantidade" style="width: 200px;">
+            <br>
+            <input type="text" name="corredor" placeholder="Digite qual o corredor" style="width: 200px" >
+            <br>
+            <input type="number" name="prateleira" placeholder="Digite qual a prateleira" style="width: 200px" >
+            <br>
+            
+            
             <button type="submit">
                 Enviar
             </button>
         </form>
     </center>
+
+
+    <label for="localizacoes"></label>
+    <select name="localizacoes">
+        {% for localizacao in localizacoes %}
+            <option value="{{localizacao}}">{{localizacao}}</option>
+        {% endfor %}
+    </select>
+
+    
+
+
+    <form action="{% url 'produtos'%}" method="POST">
+        {% csrf_token%}
+        <button type="submit">
+            Enviar
+        </button>
+    </form>
+
+    <h1>
+        {% for produto in produtos %}
+            <p>
+            {{produto}}
+            </p>
+        {% endfor %}
+    </h1>
+
     
 </body>
 </html>

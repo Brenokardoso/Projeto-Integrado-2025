@@ -20,6 +20,9 @@ class Produto(models.Model):
         verbose_name="Valor do produto", blank=True, null=True
     )
 
+    class Meta:
+        ordering = ["nome"]
+
     def __str__(self):
         return f"{self.nome}"
 
@@ -41,6 +44,9 @@ class Estoque(models.Model):
         verbose_name="Data de movimentacao", blank=True, null=True
     )
 
+    class Meta:
+        ordering = ["produto__nome"]
+
     def __str__(self):
         return f"{self.produto.nome} - {self.localizacao}"
 
@@ -48,6 +54,9 @@ class Estoque(models.Model):
 class Localizacao(models.Model):
     corredor = models.CharField(verbose_name="Corredor", blank=True, null=True)
     prateleira = models.IntegerField(verbose_name="Prateleira", null=True, blank=True)
+
+    class Meta:
+        ordering = ["corredor"]
 
     def __str__(self):
         return f"{self.corredor}"
