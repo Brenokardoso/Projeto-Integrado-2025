@@ -78,12 +78,14 @@ def buscar_produtos(request):
     return render(request=request, template_name="cadastro.html", context=lista_itens)
 
 
-def editar_produtos(request, name):
+def editar_produtos(request):
     if request.method == "POST":
         nome_produto = request.POST.get("nome_produto")
-        Produto.objects.filter(nome__icontains=nome_produto)
+        produtos = Produto.objects.filter(nome__icontains=nome_produto)
         return render(
             request,
             template_name="cadastro.html",
-            context={"produto_encontrado": nome_produto},
+            context={"produto_encontrado": produtos},
         )
+
+    return render(request, template_name="cadastro.html")

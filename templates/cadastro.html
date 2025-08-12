@@ -61,6 +61,22 @@
         </h1>
     </div>
 
+    <div>
+    <form action="{% url 'editar_produto' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="nome_produto" placeholder="Digite o nome do seu produto" style="width: 200px;">
+        <button type="submit">Buscar</button>
+        <br>
+        {% if produto_encontrado %}
+            {% for produto in produto_encontrado %}
+                {{produto}}
+            {% endfor %}
+        {{produto_encontrado}}
+        {% endif%}
+       
+    </form>
+    </div>
+
     
 </body>
 </html>
