@@ -54,20 +54,36 @@ def cadastro(request):
                 "ultima_movimentacao": data_atual,
             },
         )
-        print(created_estoque)
         item_estoque.save()
         objetos["estoque_cadastro"].append(item_estoque)
 
     return render(request=request, template_name="cadastro.html", context=objetos)
 
 
-def listar_produtos(request):
+def buscar_produtos(request):
     produtos = None
     localizacoes = Localizacao.objects.all()
     lista_itens = {"produtos": produtos, "localizacoes": localizacoes}
+    estoques = Estoque.objects.all()
 
     if request.method == "POST":
-        produtos = Produto.objects.all().order_by("nome")
-        lista_itens = {"produtos": produtos, "localizacoes": localizacoes}
+        produtos = Produto.objects.all().order_by("nome").exclude(nome__isnull=True)
+        lista_itens = {
+            "produtos": produtos,
+            "localizacoes": localizacoes,
+            "estoques": estoques,
+            "produtos_estoques": zip(produtos, estoques),
+        }
 
     return render(request=request, template_name="cadastro.html", context=lista_itens)
+
+
+def editar_produtos(request, name):
+    if request.method == "POST":
+        nome_produto = request.POST.get("nome_produto")
+        Produto.objects.filter(nome__icontains=nome_produto)
+        return render(
+            request,
+            template_name="cadastro.html",
+            context={"produto_encontrado": nome_produto},
+        )

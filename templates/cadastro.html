@@ -19,7 +19,12 @@
         {% csrf_token %}
             <input type="text" name="nome" placeholder="digite seu nome..." style="width: 200px;" >
             <br>
-            <input type="number" name="categoria" placeholder="Digite a sua categoria" style="width: 200px;">
+            <select name="categoria" style="width: 208px;">
+                <option value="">Nenhuma</option>
+                <option value="0">Bebida</option>
+                <option value="1">Comida</option>
+                <option value="2">Outros</option>
+            </select>
             <br>
             <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 200px;">
             <br>
@@ -32,40 +37,29 @@
             <input type="text" name="corredor" placeholder="Digite qual o corredor" style="width: 200px" >
             <br>
             <input type="number" name="prateleira" placeholder="Digite qual a prateleira" style="width: 200px" >
-            <br>
-            
-            
+            <br>  
             <button type="submit">
                 Enviar
             </button>
         </form>
     </center>
 
+    <div>
+        <form action="{% url 'produtos'%}" method="POST">
+            {% csrf_token%}
+            <button type="submit">
+                Trazer produtos
+            </button>
+        </form>
 
-    <label for="localizacoes"></label>
-    <select name="localizacoes">
-        {% for localizacao in localizacoes %}
-            <option value="{{localizacao}}">{{localizacao}}</option>
-        {% endfor %}
-    </select>
-
-    
-
-
-    <form action="{% url 'produtos'%}" method="POST">
-        {% csrf_token%}
-        <button type="submit">
-            Enviar
-        </button>
-    </form>
-
-    <h1>
-        {% for produto in produtos %}
-            <p>
-            {{produto}}
-            </p>
-        {% endfor %}
-    </h1>
+        <h1>
+            {% for produto,estoque in produtos_estoques %}
+                <p>
+                {{produto}}-{{estoque}}
+                </p>
+            {% endfor %}
+        </h1>
+    </div>
 
     
 </body>

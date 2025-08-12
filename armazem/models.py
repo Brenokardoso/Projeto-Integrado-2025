@@ -48,7 +48,7 @@ class Estoque(models.Model):
         ordering = ["produto__nome"]
 
     def __str__(self):
-        return f"{self.produto.nome} - {self.localizacao}"
+        return f"{self.produto.nome} - {self.quantidade}"
 
 
 class Localizacao(models.Model):
