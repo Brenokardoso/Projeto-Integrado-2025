@@ -44,7 +44,10 @@ def cadastro(request):
         item_localizacao, created_loc = Localizacao.objects.update_or_create(
             corredor=corredor,
             prateleira=prateleira,
-            defaults={"corredor": corredor, "prateleira": prateleira},
+            defaults={
+                "corredor": corredor,
+                "prateleira": prateleira,
+            },
         )
 
     if created_prod and created_loc:
@@ -53,7 +56,7 @@ def cadastro(request):
         objetos["produto_cadastro"].append(item_produto)
         objetos["localizacao_cadastro"].append(item_localizacao)
 
-        item_estoque, created_estoque = Estoque.objects.update_or_create(
+        item_estoque, _ = Estoque.objects.update_or_create(
             produto=item_produto,
             defaults={
                 "quantidade": quantidade,
@@ -74,11 +77,22 @@ def cadastro(request):
 
 def buscar_produtos(request):
     query = request.GET.get("item", "")
+    query_loc = request.GET.get("loc", "")
+
     localizacoes = Localizacao.objects.all()
     estoques = Estoque.objects.all().exclude(quantidade__isnull=True)
 
     if query:
         produtos = Produto.objects.filter(nome__icontains=query).order_by("nome")
+
+    elif query_loc:
+        produtos = Produto.objects.filter(
+            estoque__localizacao__corredor__icontains=query_loc
+        ) | Produto.objects.filter(
+            estoque__localizacao__prateleira__icontains=query_loc
+        )
+        produtos = produtos.distinct().order_by("nome")
+
     else:
         produtos = Produto.objects.all().order_by("nome").exclude(nome__isnull=True)
 
@@ -88,6 +102,7 @@ def buscar_produtos(request):
         "estoques": estoques,
         "produtos_estoques": zip(produtos, estoques),
         "query": query,
+        "query_loc": query_loc,
     }
 
     return render(
@@ -142,3 +157,19 @@ def editar_produtos(request):
             "escolha_produto": escolha_produto,
         },
     )
+
+
+def relatorios(request):
+    estoque_baixo = Estoque.objects.filter(quantidade__lte=5)
+    excesso_estoque = Estoque.objects.filter(quantidade__gte=100)
+    movimentacoes = Estoque.objects.exclude(ultima_movimentacao__isnull=True).order_by(
+        "-ultima_movimentacao"
+    )
+
+    contexto = {
+        "estoque_baixo": estoque_baixo,
+        "excesso_estoque": excesso_estoque,
+        "movimentacoes": movimentacoes,
+    }
+
+    return render(request, template_name="relatorios.html", context=contexto)

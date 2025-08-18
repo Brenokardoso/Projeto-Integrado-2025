@@ -11,19 +11,34 @@
 
     <form method="get" action="{% url 'buscar_produtos' %}">
         <input type="text" name="item" placeholder="Digite o nome do produto..." value="{{ query }}">
+        <h2>
+            ou
+        </h2>
+        <input type="text" name="loc" placeholder="Digite a localização do produto">
         <button type="submit">Buscar</button>
     </form>
 
     <hr>
 
     {% if produtos %}
+    <ul>
         {% for produto in produtos %}
-            <p>
-                {{ produto }} - {{ produto.estoque.first.quantidade }} [unidades]
-            </p>
+                <strong>{{ produto.nome }}</strong>
+                <br>
+                Estoque: {{ produto.estoque.first.quantidade|default:"0" }}
+                <br>
+                Localização: 
+                {% if produto.estoque.first.localizacao %}
+                    Corredor {{ produto.estoque.first.localizacao.corredor }},
+                    Prateleira {{ produto.estoque.first.localizacao.prateleira }}
+                {% else %}
+                    Não cadastrado
+                {% endif %}
+            <hr>
         {% endfor %}
+    </ul>
     {% else %}
-        <p>Nenhum produto encontrado.</p>
+    <p>Nenhum produto encontrado.</p>
     {% endif %}
    </center>
 </body>

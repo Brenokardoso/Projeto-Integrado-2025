@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios de Estoque</title>
+</head>
+<body>
+    <h1>Relatórios de Estoque</h1>
+
+    <h2>📉 Produtos com Estoque Baixo</h2>
+    {% if estoque_baixo %}
+        <table border="1">
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+            </tr>
+            {% for e in estoque_baixo %}
+                <tr>
+                    <td>{{ e.produto.nome }}</td>
+                    <td>{{ e.quantidade }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhum produto com estoque baixo.</p>
+    {% endif %}
+
+    <h2>📦 Produtos com Excesso de Estoque</h2>
+    {% if excesso_estoque %}
+        <table border="1">
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+            </tr>
+            {% for e in excesso_estoque %}
+                <tr>
+                    <td>{{ e.produto.nome }}</td>
+                    <td>{{ e.quantidade }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhum produto com excesso de estoque.</p>
+    {% endif %}
+
+    <h2>🔄 Movimentação de Produtos</h2>
+    {% if movimentacoes %}
+        <table border="1">
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Última Movimentação</th>
+            </tr>
+            {% for e in movimentacoes %}
+                <tr>
+                    <td>{{ e.produto.nome }}</td>
+                    <td>{{ e.quantidade }}</td>
+                    <td>{{ e.ultima_movimentacao }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhuma movimentação registrada.</p>
+    {% endif %}
+</body>
+</html>
