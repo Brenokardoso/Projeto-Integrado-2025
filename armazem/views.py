@@ -4,10 +4,16 @@ import datetime
 
 
 def cadastro(request):
+    todos_produtos = Produto.objects.all()
+    created_prod = False
+    created_loc = False
     objetos = {
         "produto_cadastro": [],
         "localizacao_cadastro": [],
         "estoque_cadastro": [],
+        "todos_produtos": todos_produtos,
+        "flag": True,
+        "menu": False,
     }
     nome = request.POST.get("nome")
     categoria = request.POST.get("categoria")
@@ -21,23 +27,25 @@ def cadastro(request):
     quantidade = request.POST.get("quantidade")
     data_atual = datetime.datetime.now()
 
-    item_produto, created_prod = Produto.objects.update_or_create(
-        nome=nome,
-        codigo_identificador=codigo_identificador,
-        defaults={
-            "nome": nome,
-            "categoria": categoria,
-            "data_validade": data_validade,
-            "codigo_identificador": codigo_identificador,
-            "valor": valor,
-        },
-    )
+    if nome is not None:
+        item_produto, created_prod = Produto.objects.update_or_create(
+            nome=nome,
+            codigo_identificador=codigo_identificador,
+            defaults={
+                "nome": nome,
+                "categoria": categoria,
+                "data_validade": data_validade,
+                "codigo_identificador": codigo_identificador,
+                "valor": valor,
+            },
+        )
 
-    item_localizacao, created_loc = Localizacao.objects.update_or_create(
-        corredor=corredor,
-        prateleira=prateleira,
-        defaults={"corredor": corredor, "prateleira": prateleira},
-    )
+    if corredor is not None:
+        item_localizacao, created_loc = Localizacao.objects.update_or_create(
+            corredor=corredor,
+            prateleira=prateleira,
+            defaults={"corredor": corredor, "prateleira": prateleira},
+        )
 
     if created_prod and created_loc:
         item_produto.save()
@@ -79,13 +87,43 @@ def buscar_produtos(request):
 
 
 def editar_produtos(request):
-    if request.method == "POST":
-        nome_produto = request.POST.get("nome_produto")
-        produtos = Produto.objects.filter(nome__icontains=nome_produto)
-        return render(
-            request,
-            template_name="cadastro.html",
-            context={"produto_encontrado": produtos},
-        )
+    web_produto = request.POST.get("todos_produtos")
+    flag = False
+    menu = True
+    print(web_produto)
+    if web_produto is not None:
+        produto_update = Produto.objects.get(pk=web_produto)
+        estoque_update = Estoque.objects.get(produto=produto_update)
+        localizacao_update = Localizacao.objects.get(estoque_localizacao=estoque_update)
+        nome = request.POST.get("nome")
+        categoria = request.POST.get("categoria")
+        data_validade = request.POST.get("data_validade")
+        codigo_identificador = request.POST.get("codigo_identificador")
+        valor = request.POST.get("valor")
 
-    return render(request, template_name="cadastro.html")
+        corredor = request.POST.get("corredor")
+        prateleira = request.POST.get("prateleira")
+
+        quantidade = request.POST.get("quantidade")
+        data_atual = datetime.datetime.now()
+
+        produto_update.nome = nome
+        produto_update.categoria = categoria
+        produto_update.data_validade = data_validade
+        produto_update.codigo_identificador = codigo_identificador
+        produto_update.valor = valor
+        produto_update.save()
+
+        estoque_update.quantidade = quantidade
+        estoque_update.ultima_movimentacao = data_atual
+        estoque_update.save()
+
+        localizacao_update.corredor = corredor
+        localizacao_update.prateleira = prateleira
+        localizacao_update.save()
+
+        print(f"{nome}-{quantidade}")
+
+    return render(
+        request, template_name="cadastro.html", context={"flag": flag, "menu": menu}
+    )

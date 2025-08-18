@@ -37,7 +37,7 @@ class Estoque(models.Model):
     localizacao = models.ForeignKey(
         to="Localizacao",
         on_delete=models.DO_NOTHING,
-        related_name="estoque",
+        related_name="estoque_localizacao",
         verbose_name="Localizacao",
     )
     ultima_movimentacao = models.DateField(

@@ -45,36 +45,50 @@
     </center>
 
     <div>
-        <form action="{% url 'produtos'%}" method="POST">
-            {% csrf_token%}
-            <button type="submit">
-                Trazer produtos
-            </button>
+        <form action="{% url 'editar_produto' %}" method="POST">
+            {% csrf_token %}
+            <label for="editar_produto"> Escolha o produto a ser editado</label>
+            <br>
+            {% if menu is False %}
+                <select name="todos_produtos" style="width: 200px" >
+                    {% for item_produto in todos_produtos %}
+                        <option value="{{item_produto.id}}">{{item_produto}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Enviar</button>
+            {% endif %}
+
+            {% if menu %}
+            <div>
+                <input type="text" name="nome" placeholder="digite seu nome..." style="width: 200px;" >
+                <br>
+                <select name="categoria" style="width: 208px;">
+                    <option value="">Nenhuma</option>
+                    <option value="0">Bebida</option>
+                    <option value="1">Comida</option>
+                    <option value="2">Outros</option>
+                </select>
+                <br>
+                <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 200px;">
+                <br>
+                <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador" style="width: 200px;">
+                <br>
+                <input type="number" name="valor" placeholder="Digite o seu valor" style="width: 200px;">
+                <br>
+                <input type="number" name="quantidade" placeholder="Digite a quantidade" style="width: 200px;">
+                <br>
+                <input type="text" name="corredor" placeholder="Digite qual o corredor" style="width: 200px" >
+                <br>
+                <input type="number" name="prateleira" placeholder="Digite qual a prateleira" style="width: 200px" >
+                <br>  
+                <button type="submit">
+                    Enviar
+                </button>
+            </div>
+            {% endif %}
+            
+         
         </form>
-
-        <h1>
-            {% for produto,estoque in produtos_estoques %}
-                <p>
-                {{produto}}-{{estoque}}
-                </p>
-            {% endfor %}
-        </h1>
-    </div>
-
-    <div>
-    <form action="{% url 'editar_produto' %}" method="POST">
-        {% csrf_token %}
-        <input type="text" name="nome_produto" placeholder="Digite o nome do seu produto" style="width: 200px;">
-        <button type="submit">Buscar</button>
-        <br>
-        {% if produto_encontrado %}
-            {% for produto in produto_encontrado %}
-                {{produto}}
-            {% endfor %}
-        {{produto_encontrado}}
-        {% endif%}
-       
-    </form>
     </div>
 
     
