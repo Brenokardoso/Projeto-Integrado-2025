@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/base_css.css'%}">
-    <title>Armazem</title>
+    <title> Edição de produtos </title>
 </head>
 <body>
 
@@ -22,14 +22,13 @@
 
             <form action="{% url 'editar_produtos' %}" method="POST">
                 {% csrf_token %}
-                <label for="editar_produtos"> Escolha o produto a ser editado</label>
+                <label for="escolha_produto"> Escolha o produto a ser editado</label>
                 <br>
-                    <select name="todos_produtos" style="width: 200px" >
-                        {% for item_produto in todos_produtos %}
-                            <option value="{{item_produto.id}}">{{item_produto}}</option>
+                    <select name="escolha_produto" style="width: 208px" >
+                        {% for escolha in escolha_produto %}
+                            <option value="{{escolha.id}}">{{escolha}}</option>
                         {% endfor %}
                     </select>
-                    <button type="submit">Enviar</button>
 
                 <div>
                     <input type="text" name="nome" placeholder="digite seu nome..." style="width: 200px;" >
@@ -41,7 +40,7 @@
                         <option value="2">Outros</option>
                     </select>
                     <br>
-                    <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 200px;">
+                    <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 203px;">
                     <br>
                     <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador" style="width: 200px;">
                     <br>

@@ -65,29 +65,41 @@ def cadastro(request):
         item_estoque.save()
         objetos["estoque_cadastro"].append(item_estoque)
 
-    return render(request=request, template_name="cadastro.html", context=objetos)
+    return render(
+        request=request,
+        template_name="cadastro.html",
+        context=objetos,
+    )
 
 
 def buscar_produtos(request):
-    produtos = None
+    query = request.GET.get("item", "")
     localizacoes = Localizacao.objects.all()
-    lista_itens = {"produtos": produtos, "localizacoes": localizacoes}
-    estoques = Estoque.objects.all()
+    estoques = Estoque.objects.all().exclude(quantidade__isnull=True)
 
-    if request.method == "POST":
+    if query:
+        produtos = Produto.objects.filter(nome__icontains=query).order_by("nome")
+    else:
         produtos = Produto.objects.all().order_by("nome").exclude(nome__isnull=True)
-        lista_itens = {
-            "produtos": produtos,
-            "localizacoes": localizacoes,
-            "estoques": estoques,
-            "produtos_estoques": zip(produtos, estoques),
-        }
 
-    return render(request=request, template_name="cadastro.html", context=lista_itens)
+    lista_itens = {
+        "produtos": produtos,
+        "localizacoes": localizacoes,
+        "estoques": estoques,
+        "produtos_estoques": zip(produtos, estoques),
+        "query": query,
+    }
+
+    return render(
+        request=request,
+        template_name="buscar_produtos.html",
+        context=lista_itens,
+    )
 
 
 def editar_produtos(request):
-    web_produto = request.POST.get("todos_produtos")
+    escolha_produto = Produto.objects.all()
+    web_produto = request.POST.get("escolha_produto")
     if web_produto is not None:
         produto_update = Produto.objects.get(pk=web_produto)
         estoque_update = Estoque.objects.get(produto=produto_update)
@@ -127,5 +139,6 @@ def editar_produtos(request):
         template_name="editar.html",
         context={
             "todos_produtos": web_produto,
+            "escolha_produto": escolha_produto,
         },
     )

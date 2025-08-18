@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/base_css.css'%}">
-    <title>Armazem</title>
+    <title> Cadastro de produtos </title>
 </head>
 <body>
     
@@ -37,12 +37,17 @@
             <input type="text" name="corredor" placeholder="Digite qual o corredor" style="width: 200px" >
             <br>
             <input type="number" name="prateleira" placeholder="Digite qual a prateleira" style="width: 200px" >
+            <br>
             <br>  
             <button type="submit">
                 Enviar
             </button>
             <a href="{% url 'editar_produtos' %}">
              <button type="button">Editar Produtos</button>
+            </a>
+            
+            <a href="{% url 'buscar_produtos' %}">
+             <button type="button">Buscar Produtos</button>
             </a>
         </form>
     </center>
