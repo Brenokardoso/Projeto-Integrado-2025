@@ -41,56 +41,11 @@
             <button type="submit">
                 Enviar
             </button>
+            <a href="{% url 'editar_produtos' %}">
+             <button type="button">Editar Produtos</button>
+            </a>
         </form>
     </center>
-
-    <div>
-        <form action="{% url 'editar_produto' %}" method="POST">
-            {% csrf_token %}
-            <label for="editar_produto"> Escolha o produto a ser editado</label>
-            <br>
-            {% if menu is False %}
-                <select name="todos_produtos" style="width: 200px" >
-                    {% for item_produto in todos_produtos %}
-                        <option value="{{item_produto.id}}">{{item_produto}}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Enviar</button>
-            {% endif %}
-
-            {% if menu %}
-            <div>
-                <input type="text" name="nome" placeholder="digite seu nome..." style="width: 200px;" >
-                <br>
-                <select name="categoria" style="width: 208px;">
-                    <option value="">Nenhuma</option>
-                    <option value="0">Bebida</option>
-                    <option value="1">Comida</option>
-                    <option value="2">Outros</option>
-                </select>
-                <br>
-                <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 200px;">
-                <br>
-                <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador" style="width: 200px;">
-                <br>
-                <input type="number" name="valor" placeholder="Digite o seu valor" style="width: 200px;">
-                <br>
-                <input type="number" name="quantidade" placeholder="Digite a quantidade" style="width: 200px;">
-                <br>
-                <input type="text" name="corredor" placeholder="Digite qual o corredor" style="width: 200px" >
-                <br>
-                <input type="number" name="prateleira" placeholder="Digite qual a prateleira" style="width: 200px" >
-                <br>  
-                <button type="submit">
-                    Enviar
-                </button>
-            </div>
-            {% endif %}
-            
-         
-        </form>
-    </div>
-
     
 </body>
 </html>

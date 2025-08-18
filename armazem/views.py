@@ -88,13 +88,11 @@ def buscar_produtos(request):
 
 def editar_produtos(request):
     web_produto = request.POST.get("todos_produtos")
-    flag = False
-    menu = True
-    print(web_produto)
     if web_produto is not None:
         produto_update = Produto.objects.get(pk=web_produto)
         estoque_update = Estoque.objects.get(produto=produto_update)
         localizacao_update = Localizacao.objects.get(estoque_localizacao=estoque_update)
+
         nome = request.POST.get("nome")
         categoria = request.POST.get("categoria")
         data_validade = request.POST.get("data_validade")
@@ -125,5 +123,9 @@ def editar_produtos(request):
         print(f"{nome}-{quantidade}")
 
     return render(
-        request, template_name="cadastro.html", context={"flag": flag, "menu": menu}
+        request,
+        template_name="editar.html",
+        context={
+            "todos_produtos": web_produto,
+        },
     )

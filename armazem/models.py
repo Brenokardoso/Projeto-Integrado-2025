@@ -30,13 +30,13 @@ class Produto(models.Model):
 class Estoque(models.Model):
     produto = models.ForeignKey(
         to=Produto,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="estoque",
     )
     quantidade = models.IntegerField(verbose_name="Quantidade", null=True, blank=True)
     localizacao = models.ForeignKey(
         to="Localizacao",
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name="estoque_localizacao",
         verbose_name="Localizacao",
     )

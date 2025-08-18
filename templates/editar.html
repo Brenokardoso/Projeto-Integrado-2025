@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/base_css.css'%}">
+    <title>Armazem</title>
+</head>
+<body>
+
+           
+
+    
+   <center>
+        <div>
+            <h2>
+                Editar produtos
+            </h2>
+            <br>
+
+            <form action="{% url 'editar_produtos' %}" method="POST">
+                {% csrf_token %}
+                <label for="editar_produtos"> Escolha o produto a ser editado</label>
+                <br>
+                    <select name="todos_produtos" style="width: 200px" >
+                        {% for item_produto in todos_produtos %}
+                            <option value="{{item_produto.id}}">{{item_produto}}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Enviar</button>
+
+                <div>
+                    <input type="text" name="nome" placeholder="digite seu nome..." style="width: 200px;" >
+                    <br>
+                    <select name="categoria" style="width: 208px;">
+                        <option value="">Nenhuma</option>
+                        <option value="0">Bebida</option>
+                        <option value="1">Comida</option>
+                        <option value="2">Outros</option>
+                    </select>
+                    <br>
+                    <input type="date" name="data_validade" placeholder="Digite a sua data_validade" style="width: 200px;">
+                    <br>
+                    <input type="text" name="codigo_identificador" placeholder="Digite o seu codigo_identificador" style="width: 200px;">
+                    <br>
+                    <input type="number" name="valor" placeholder="Digite o seu valor" style="width: 200px;">
+                    <br>
+                    <input type="number" name="quantidade" placeholder="Digite a quantidade" style="width: 200px;">
+                    <br>
+                    <input type="text" name="corredor" placeholder="Digite qual o corredor" style="width: 200px" >
+                    <br>
+                    <input type="number" name="prateleira" placeholder="Digite qual a prateleira" style="width: 200px" >
+                    <br>  
+                    <button type="submit">
+                        Enviar
+                    </button>
+                </div>
+            
+            </form>
+        </div>
+    </center>
+
+
+</body>
+</html>
